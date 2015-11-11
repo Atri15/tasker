@@ -1,0 +1,17 @@
+*/[O|o]bj/*
+*/[B|b]in/*
+*.csproj.user
+*Thumbs.db
+*.suo
+*.user
+/msbuild.log
+*.log
+build/
+*.pidb
+*.userprefs
+*/submit.xml
+*.Publish.xml
+
+*.orig
+packages/**/
+.~*#
