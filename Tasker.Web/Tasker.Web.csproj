@@ -165,6 +165,16 @@
     <Content Include="packages.config" />
     <None Include="Project_Readme.html" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Tasker.Common\Tasker.Common.csproj">
+      <Project>{a1f84753-02c7-4092-9f52-afb42d5a8a56}</Project>
+      <Name>Tasker.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Tasker.Data\Tasker.Data.csproj">
+      <Project>{c010b31b-f164-465b-b450-406e3c970cc3}</Project>
+      <Name>Tasker.Data</Name>
+    </ProjectReference>
+  </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
