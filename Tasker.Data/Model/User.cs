@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNet.Identity;
 
 namespace Tasker.Data.Model
@@ -17,8 +18,10 @@ namespace Tasker.Data.Model
             UserName = "Admin"
         };
 
+        [Key]
         public Guid Id { get; set; }
 
+        [Required]
         public string UserName { get; set; }
     }
 }

@@ -15,3 +15,6 @@ build/
 *.orig
 packages/**/
 .~*#
+
+Tasker.Web/App_Data/Tasker.mdf
+Tasker.Web/App_Data/Tasker_log.ldf
