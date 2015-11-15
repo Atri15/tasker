@@ -11,6 +11,12 @@ namespace Tasker.Data.Model
             UserName = "Test"
         };
 
+        public static readonly User AdminUser = new User
+        {
+            Id = Guid.Parse("3C26880F-FC1D-4742-B2E6-1A4E3CAA0DAF"),
+            UserName = "Admin"
+        };
+
         public Guid Id { get; set; }
 
         public string UserName { get; set; }

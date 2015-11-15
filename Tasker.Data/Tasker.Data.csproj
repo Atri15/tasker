@@ -61,6 +61,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DAL\TaskerDbContext.cs" />
+    <Compile Include="DAL\TaskerDbInitializer.cs" />
     <Compile Include="Manager\CustomPasswordHasher.cs" />
     <Compile Include="Manager\CustomSignInManager.cs" />
     <Compile Include="Model\Enum\JobStatus.cs" />
