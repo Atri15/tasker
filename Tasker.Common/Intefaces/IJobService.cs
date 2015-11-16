@@ -9,11 +9,11 @@ namespace Tasker.Common.Intefaces
 {
     public interface IJobService
     {
-        IEnumerable<Job> GetAll(User assignedUser);
+        IEnumerable<Job> GetAll(Guid assignedUserId);
 
-        Job FindById(Guid id, User assignedUser);
+        Job FindById(Guid id, Guid assignedUserId);
 
-        IEnumerable<Job> FindByName(string mask, User assignedUser);
+        IEnumerable<Job> FindByName(string mask, Guid assignedUserId);
 
         void Save(Job job);
     }

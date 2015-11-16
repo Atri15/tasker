@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Data.Entity;
-using System.Linq;
 using System.Net;
 using System.Web.Mvc;
+using Microsoft.AspNet.Identity;
+using Tasker.Common.Intefaces;
 using Tasker.Data.DAL;
 using Tasker.Data.Model;
 
@@ -11,26 +12,49 @@ namespace Tasker.Web.Controllers
     [Authorize]
     public class JobsController : Controller
     {
-        private readonly TaskerDbContext db = new TaskerDbContext();
+        private readonly TaskerDbContext _dbContext;
+        private readonly IJobService _jobService;
+
+        public JobsController(TaskerDbContext dbContext, IJobService jobService)
+        {
+            _dbContext = dbContext;
+            _jobService = jobService;
+        }
 
         // GET: Jobs
         public ActionResult Index()
         {
-            return View(db.Jobs.ToList());
+            Guid userId;
+            if (!Guid.TryParse(System.Web.HttpContext.Current.User.Identity.GetUserId(), out userId))
+            {
+                return View();
+            }
+
+            var model = _jobService.GetAll(userId);
+
+            return View(model);
         }
 
         // GET: Jobs/Details/5
         public ActionResult Details(Guid? id)
         {
+            Guid userId;
+            if (!Guid.TryParse(System.Web.HttpContext.Current.User.Identity.GetUserId(), out userId))
+            {
+                return View();
+            }
+
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            var job = db.Jobs.Find(id);
+
+            var job = _jobService.FindById(id.Value, userId);
             if (job == null)
             {
                 return HttpNotFound();
             }
+
             return View(job);
         }
 
@@ -50,8 +74,9 @@ namespace Tasker.Web.Controllers
             if (ModelState.IsValid)
             {
                 job.Id = Guid.NewGuid();
-                db.Jobs.Add(job);
-                db.SaveChanges();
+                _dbContext.Jobs.Add(job);
+                _dbContext.SaveChanges();
+
                 return RedirectToAction("Index");
             }
 
@@ -61,16 +86,23 @@ namespace Tasker.Web.Controllers
         // GET: Jobs/Edit/5
         public ActionResult Edit(Guid? id)
         {
+            Guid userId;
+            if (!Guid.TryParse(System.Web.HttpContext.Current.User.Identity.GetUserId(), out userId))
+            {
+                return View();
+            }
+
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
 
-            var job = db.Jobs.Find(id);
+            var job = _jobService.FindById(id.Value, userId);
             if (job == null)
             {
                 return HttpNotFound();
             }
+
             return View(job);
         }
 
@@ -83,25 +115,34 @@ namespace Tasker.Web.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.Entry(job).State = EntityState.Modified;
-                db.SaveChanges();
+                _dbContext.Entry(job).State = EntityState.Modified;
+                _dbContext.SaveChanges();
                 return RedirectToAction("Index");
             }
+
             return View(job);
         }
 
         // GET: Jobs/Delete/5
         public ActionResult Delete(Guid? id)
         {
+            Guid userId;
+            if (!Guid.TryParse(System.Web.HttpContext.Current.User.Identity.GetUserId(), out userId))
+            {
+                return View();
+            }
+
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            var job = db.Jobs.Find(id);
+
+            var job = _jobService.FindById(id.Value, userId);
             if (job == null)
             {
                 return HttpNotFound();
             }
+
             return View(job);
         }
 
@@ -110,9 +151,10 @@ namespace Tasker.Web.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(Guid id)
         {
-            var job = db.Jobs.Find(id);
-            db.Jobs.Remove(job);
-            db.SaveChanges();
+            var job = _dbContext.Jobs.Find(id);
+            _dbContext.Jobs.Remove(job);
+            _dbContext.SaveChanges();
+
             return RedirectToAction("Index");
         }
 
@@ -120,7 +162,7 @@ namespace Tasker.Web.Controllers
         {
             if (disposing)
             {
-                db.Dispose();
+                _dbContext.Dispose();
             }
 
             base.Dispose(disposing);

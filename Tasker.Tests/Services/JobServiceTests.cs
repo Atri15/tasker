@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using NUnit.Framework;
 using Tasker.Common.Services;
+using Tasker.Data.DAL;
 
 namespace Tasker.Tests.Services
 {
@@ -14,7 +15,8 @@ namespace Tasker.Tests.Services
         [Test]
         public void CreationTest()
         {
-            var service = new JobService();
+            var dbContext = new TaskerDbContext();
+            var service = new JobService(dbContext);
             Assert.IsNotNull(service);
         }
     }

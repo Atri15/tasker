@@ -32,6 +32,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="EntityFramework">
+      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
     <Reference Include="nunit.framework">
       <HintPath>..\packages\NUnit.2.6.4\lib\nunit.framework.dll</HintPath>
     </Reference>
@@ -51,6 +54,10 @@
     <ProjectReference Include="..\Tasker.Common\Tasker.Common.csproj">
       <Project>{a1f84753-02c7-4092-9f52-afb42d5a8a56}</Project>
       <Name>Tasker.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Tasker.Data\Tasker.Data.csproj">
+      <Project>{C010B31B-F164-465B-B450-406E3C970CC3}</Project>
+      <Name>Tasker.Data</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

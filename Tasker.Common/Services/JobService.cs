@@ -1,25 +1,45 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Tasker.Common.Intefaces;
+using Tasker.Data.DAL;
 using Tasker.Data.Model;
 
 namespace Tasker.Common.Services
 {
     public class JobService : IJobService
     {
-        public IEnumerable<Job> GetAll(User assignedUser)
+        private readonly TaskerDbContext _dbContext;
+
+        public JobService(TaskerDbContext dbContext)
         {
-            throw new NotImplementedException();
+            _dbContext = dbContext;
         }
 
-        public Job FindById(Guid id, User assignedUser)
+        public IEnumerable<Job> GetAll(Guid assignedUserId)
         {
-            throw new NotImplementedException();
+            var query = _dbContext.Jobs
+                .Where(x => x.AssignedToUser.Id == assignedUserId)
+                .OrderBy(x => x.DateEnd)
+                .ThenBy(x => x.Name);
+
+            return query.ToList();
         }
 
-        public IEnumerable<Job> FindByName(string mask, User assignedUser)
+        public Job FindById(Guid id, Guid assignedUserId)
         {
-            throw new NotImplementedException();
+            return _dbContext.Jobs
+               .Where(x => x.AssignedToUser.Id == assignedUserId)
+               .FirstOrDefault(x => x.Id == id);
+        }
+
+        public IEnumerable<Job> FindByName(string mask, Guid assignedUserId)
+        {
+            var query = _dbContext.Jobs
+               .Where(x => x.AssignedToUser.Id == assignedUserId)
+               .Where(x => x.Name != null && x.Name.Contains(mask));
+
+            return query.ToList();
         }
 
         public void Save(Job job)

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data.Entity;
+using System.Linq;
 using Tasker.Data.Model;
 using Tasker.Data.Model.Enum;
 
@@ -56,8 +57,20 @@ namespace Tasker.Data.DAL
                     ModifedBy = null,
                     Name = "Finished task",
                     Status = JobStatus.Done
-                }
+                },
             };
+            jobs.AddRange(Enumerable.Range(4, 100).Select(x => new Job()
+            {
+                Id = Guid.NewGuid(),
+                Created = DateTime.UtcNow,
+                CreatedBy = User.AdminUser,
+                DateEnd = DateTime.UtcNow.AddDays(x - 50),
+                AssignedToUser = User.TestUser,
+                Modifed = null,
+                ModifedBy = null,
+                Name = String.Format("Task #{0:000}", x),
+                Status = JobStatus.New
+            }));
 
             jobs.ForEach(x => context.Jobs.Add(x));
             context.SaveChanges();
