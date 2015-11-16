@@ -1,4 +1,5 @@
 ﻿using System.Data.Entity;
+using System.Data.Entity.ModelConfiguration.Conventions;
 using Tasker.Data.Model;
 
 namespace Tasker.Data.DAL
@@ -16,6 +17,12 @@ namespace Tasker.Data.DAL
         public static TaskerDbContext Create()
         {
             return new TaskerDbContext();
+        }
+
+        protected override void OnModelCreating(DbModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
+            modelBuilder.Conventions.Remove<OneToManyCascadeDeleteConvention>();
         }
     }
 }
