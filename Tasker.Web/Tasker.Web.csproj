@@ -153,7 +153,8 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\AccountController.cs" />
-    <Compile Include="Controllers\JobsController.cs" />
+    <Compile Include="Controllers\TaskController.cs" />
+    <Compile Include="Models\TaskModel.cs" />
     <Compile Include="Models\LoginViewModel.cs" />
     <Compile Include="Startup.cs" />
     <Compile Include="Controllers\HomeController.cs" />
@@ -200,11 +201,11 @@
     <Content Include="Scripts\jquery-1.10.2.min.map" />
     <Content Include="Views\Account\Login.cshtml" />
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
-    <Content Include="Views\Jobs\Create.cshtml" />
-    <Content Include="Views\Jobs\Delete.cshtml" />
-    <Content Include="Views\Jobs\Details.cshtml" />
-    <Content Include="Views\Jobs\Edit.cshtml" />
-    <Content Include="Views\Jobs\Index.cshtml" />
+    <Content Include="Views\Task\Create.cshtml" />
+    <Content Include="Views\Task\Delete.cshtml" />
+    <Content Include="Views\Task\Details.cshtml" />
+    <Content Include="Views\Task\Edit.cshtml" />
+    <Content Include="Views\Task\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -217,9 +218,9 @@
     <None Include="Project_Readme.html" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Tasker.Common\Tasker.Common.csproj">
+    <ProjectReference Include="..\Tasker.Services\Tasker.Services.csproj">
       <Project>{a1f84753-02c7-4092-9f52-afb42d5a8a56}</Project>
-      <Name>Tasker.Common</Name>
+      <Name>Tasker.Services</Name>
     </ProjectReference>
     <ProjectReference Include="..\Tasker.Data\Tasker.Data.csproj">
       <Project>{c010b31b-f164-465b-b450-406e3c970cc3}</Project>

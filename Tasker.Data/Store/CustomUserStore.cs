@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNet.Identity;
 using Tasker.Data.DAL;
 using Tasker.Data.Model;
+using Task = System.Threading.Tasks.Task;
 
 namespace Tasker.Data.Store
 {

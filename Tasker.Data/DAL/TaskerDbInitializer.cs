@@ -20,9 +20,9 @@ namespace Tasker.Data.DAL
             users.ForEach(x => context.Users.Add(x));
             context.SaveChanges();
 
-            var jobs = new List<Job>
+            var tasks = new List<Task>
             {
-                new Job
+                new Task
                 {
                     Id = Guid.NewGuid(),
                     AssignedToUser = User.TestUser,
@@ -32,9 +32,9 @@ namespace Tasker.Data.DAL
                     Modifed = null,
                     ModifedBy = null,
                     Name = "First task",
-                    Status = JobStatus.New
+                    Status = TaskStatus.New
                 },
-                new Job
+                new Task
                 {
                     Id = Guid.NewGuid(),
                     AssignedToUser = User.TestUser,
@@ -44,9 +44,9 @@ namespace Tasker.Data.DAL
                     Modifed = null,
                     ModifedBy = null,
                     Name = "Second task",
-                    Status = JobStatus.New
+                    Status = TaskStatus.New
                 },
-                new Job
+                new Task
                 {
                     Id = Guid.NewGuid(),
                     AssignedToUser = User.TestUser,
@@ -56,10 +56,10 @@ namespace Tasker.Data.DAL
                     Modifed = null,
                     ModifedBy = null,
                     Name = "Finished task",
-                    Status = JobStatus.Done
+                    Status = TaskStatus.Done
                 },
             };
-            jobs.AddRange(Enumerable.Range(4, 100).Select(x => new Job()
+            tasks.AddRange(Enumerable.Range(4, 100).Select(x => new Task()
             {
                 Id = Guid.NewGuid(),
                 Created = DateTime.UtcNow,
@@ -69,10 +69,10 @@ namespace Tasker.Data.DAL
                 Modifed = null,
                 ModifedBy = null,
                 Name = String.Format("Task #{0:000}", x),
-                Status = JobStatus.New
+                Status = TaskStatus.New
             }));
 
-            jobs.ForEach(x => context.Jobs.Add(x));
+            tasks.ForEach(x => context.Tasks.Add(x));
             context.SaveChanges();
 
             base.Seed(context);

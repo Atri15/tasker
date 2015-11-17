@@ -10,18 +10,18 @@ using Tasker.Data.Model;
 namespace Tasker.Web.Controllers
 {
     [Authorize]
-    public class JobsController : Controller
+    public class TaskController : Controller
     {
         private readonly TaskerDbContext _dbContext;
-        private readonly IJobService _jobService;
+        private readonly ITaskService _taskService;
 
-        public JobsController(TaskerDbContext dbContext, IJobService jobService)
+        public TaskController(TaskerDbContext dbContext, ITaskService taskService)
         {
             _dbContext = dbContext;
-            _jobService = jobService;
+            _taskService = taskService;
         }
 
-        // GET: Jobs
+        // GET: Tasks
         public ActionResult Index()
         {
             Guid userId;
@@ -30,12 +30,12 @@ namespace Tasker.Web.Controllers
                 return View();
             }
 
-            var model = _jobService.GetAll(userId);
+            var model = _taskService.GetAll(userId);
 
             return View(model);
         }
 
-        // GET: Jobs/Details/5
+        // GET: Tasks/Details/5
         public ActionResult Details(Guid? id)
         {
             Guid userId;
@@ -49,41 +49,41 @@ namespace Tasker.Web.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
 
-            var job = _jobService.FindById(id.Value, userId);
-            if (job == null)
+            var task = _taskService.FindById(id.Value, userId);
+            if (task == null)
             {
                 return HttpNotFound();
             }
 
-            return View(job);
+            return View(task);
         }
 
-        // GET: Jobs/Create
+        // GET: Tasks/Create
         public ActionResult Create()
         {
             return View();
         }
 
-        // POST: Jobs/Create
+        // POST: Tasks/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,Name,DateEnd,Status,Created,Modifed")] Job job)
+        public ActionResult Create([Bind(Include = "Id,Name,DateEnd,Status,Created,Modifed")] Task task)
         {
             if (ModelState.IsValid)
             {
-                job.Id = Guid.NewGuid();
-                _dbContext.Jobs.Add(job);
+                task.Id = Guid.NewGuid();
+                _dbContext.Tasks.Add(task);
                 _dbContext.SaveChanges();
 
                 return RedirectToAction("Index");
             }
 
-            return View(job);
+            return View(task);
         }
 
-        // GET: Jobs/Edit/5
+        // GET: Tasks/Edit/5
         public ActionResult Edit(Guid? id)
         {
             Guid userId;
@@ -97,33 +97,33 @@ namespace Tasker.Web.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
 
-            var job = _jobService.FindById(id.Value, userId);
-            if (job == null)
+            var task = _taskService.FindById(id.Value, userId);
+            if (task == null)
             {
                 return HttpNotFound();
             }
 
-            return View(job);
+            return View(task);
         }
 
-        // POST: Jobs/Edit/5
+        // POST: Tasks/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,Name,DateEnd,Status,Created,Modifed")] Job job)
+        public ActionResult Edit([Bind(Include = "Id,Name,DateEnd,Status,Created,Modifed")] Task task)
         {
             if (ModelState.IsValid)
             {
-                _dbContext.Entry(job).State = EntityState.Modified;
+                _dbContext.Entry(task).State = EntityState.Modified;
                 _dbContext.SaveChanges();
                 return RedirectToAction("Index");
             }
 
-            return View(job);
+            return View(task);
         }
 
-        // GET: Jobs/Delete/5
+        // GET: Tasks/Delete/5
         public ActionResult Delete(Guid? id)
         {
             Guid userId;
@@ -137,22 +137,22 @@ namespace Tasker.Web.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
 
-            var job = _jobService.FindById(id.Value, userId);
-            if (job == null)
+            var task = _taskService.FindById(id.Value, userId);
+            if (task == null)
             {
                 return HttpNotFound();
             }
 
-            return View(job);
+            return View(task);
         }
 
-        // POST: Jobs/Delete/5
+        // POST: Tasks/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(Guid id)
         {
-            var job = _dbContext.Jobs.Find(id);
-            _dbContext.Jobs.Remove(job);
+            var task = _dbContext.Tasks.Find(id);
+            _dbContext.Tasks.Remove(task);
             _dbContext.SaveChanges();
 
             return RedirectToAction("Index");

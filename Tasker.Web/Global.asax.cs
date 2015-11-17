@@ -32,7 +32,7 @@ namespace Tasker.Web
             builder.RegisterControllers(typeof(MvcApplication).Assembly);
 
             //register types
-            builder.RegisterType<JobService>().As<IJobService>();
+            builder.RegisterType<TaskService>().As<ITaskService>();
             builder.RegisterType<TaskerDbContext>().AsSelf();
 
             var container = builder.Build();

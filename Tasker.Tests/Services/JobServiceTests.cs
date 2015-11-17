@@ -16,7 +16,7 @@ namespace Tasker.Tests.Services
         public void CreationTest()
         {
             var dbContext = new TaskerDbContext();
-            var service = new JobService(dbContext);
+            var service = new TaskService(dbContext);
             Assert.IsNotNull(service);
         }
     }

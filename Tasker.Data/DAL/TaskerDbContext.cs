@@ -12,7 +12,7 @@ namespace Tasker.Data.DAL
         }
 
         public virtual IDbSet<User> Users { get; set; }
-        public virtual IDbSet<Job> Jobs { get; set; }
+        public virtual IDbSet<Task> Tasks { get; set; }
 
         public static TaskerDbContext Create()
         {

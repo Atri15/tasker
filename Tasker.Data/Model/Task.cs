@@ -4,7 +4,7 @@ using Tasker.Data.Model.Enum;
 
 namespace Tasker.Data.Model
 {
-    public class Job
+    public class Task
     {
         [Key]
         public Guid Id { get; set; }
@@ -15,7 +15,7 @@ namespace Tasker.Data.Model
         public DateTime? DateEnd { get; set; }
 
         [Required]
-        public JobStatus? Status { get; set; }
+        public TaskStatus? Status { get; set; }
 
         [Required]
         public User AssignedToUser { get; set; }

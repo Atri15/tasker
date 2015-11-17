@@ -7,18 +7,18 @@ using Tasker.Data.Model;
 
 namespace Tasker.Common.Services
 {
-    public class JobService : IJobService
+    public class TaskService : ITaskService
     {
         private readonly TaskerDbContext _dbContext;
 
-        public JobService(TaskerDbContext dbContext)
+        public TaskService(TaskerDbContext dbContext)
         {
             _dbContext = dbContext;
         }
 
-        public IEnumerable<Job> GetAll(Guid assignedUserId)
+        public IEnumerable<Task> GetAll(Guid assignedUserId)
         {
-            var query = _dbContext.Jobs
+            var query = _dbContext.Tasks
                 .Where(x => x.AssignedToUser.Id == assignedUserId)
                 .OrderBy(x => x.DateEnd)
                 .ThenBy(x => x.Name);
@@ -26,23 +26,23 @@ namespace Tasker.Common.Services
             return query.ToList();
         }
 
-        public Job FindById(Guid id, Guid assignedUserId)
+        public Task FindById(Guid id, Guid assignedUserId)
         {
-            return _dbContext.Jobs
+            return _dbContext.Tasks
                .Where(x => x.AssignedToUser.Id == assignedUserId)
                .FirstOrDefault(x => x.Id == id);
         }
 
-        public IEnumerable<Job> FindByName(string mask, Guid assignedUserId)
+        public IEnumerable<Task> FindByName(string mask, Guid assignedUserId)
         {
-            var query = _dbContext.Jobs
+            var query = _dbContext.Tasks
                .Where(x => x.AssignedToUser.Id == assignedUserId)
                .Where(x => x.Name != null && x.Name.Contains(mask));
 
             return query.ToList();
         }
 
-        public void Save(Job job)
+        public void Save(Task task)
         {
             throw new NotImplementedException();
         }

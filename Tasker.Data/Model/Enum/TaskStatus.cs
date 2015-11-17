@@ -1,6 +1,6 @@
 ﻿namespace Tasker.Data.Model.Enum
 {
-    public enum JobStatus
+    public enum TaskStatus
     {
         New,
         Done,
