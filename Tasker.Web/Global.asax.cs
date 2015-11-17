@@ -5,9 +5,9 @@ using System.Web.Optimization;
 using System.Web.Routing;
 using Autofac;
 using Autofac.Integration.Mvc;
-using Tasker.Common.Intefaces;
-using Tasker.Common.Services;
 using Tasker.Data.DAL;
+using Tasker.Services.Intefaces;
+using Tasker.Services.Services;
 
 namespace Tasker.Web
 {

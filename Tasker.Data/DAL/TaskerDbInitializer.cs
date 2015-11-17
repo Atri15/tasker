@@ -57,9 +57,9 @@ namespace Tasker.Data.DAL
                     ModifedBy = null,
                     Name = "Finished task",
                     Status = TaskStatus.Done
-                },
+                }
             };
-            tasks.AddRange(Enumerable.Range(4, 100).Select(x => new Task()
+            tasks.AddRange(Enumerable.Range(4, 100).Select(x => new Task
             {
                 Id = Guid.NewGuid(),
                 Created = DateTime.UtcNow,
@@ -68,7 +68,7 @@ namespace Tasker.Data.DAL
                 AssignedToUser = User.TestUser,
                 Modifed = null,
                 ModifedBy = null,
-                Name = String.Format("Task #{0:000}", x),
+                Name = string.Format("Task #{0:000}", x),
                 Status = TaskStatus.New
             }));
 

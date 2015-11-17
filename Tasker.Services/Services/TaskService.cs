@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
-using Tasker.Common.Intefaces;
+using System.Runtime.InteropServices.WindowsRuntime;
 using Tasker.Data.DAL;
 using Tasker.Data.Model;
+using Tasker.Services.Intefaces;
 
-namespace Tasker.Common.Services
+namespace Tasker.Services.Services
 {
     public class TaskService : ITaskService
     {
@@ -19,6 +21,9 @@ namespace Tasker.Common.Services
         public IEnumerable<Task> GetAll(Guid assignedUserId)
         {
             var query = _dbContext.Tasks
+                .Include(x => x.CreatedBy)
+                .Include(x => x.AssignedToUser)
+                .Include(x => x.ModifedBy)
                 .Where(x => x.AssignedToUser.Id == assignedUserId)
                 .OrderBy(x => x.DateEnd)
                 .ThenBy(x => x.Name);
@@ -29,22 +34,47 @@ namespace Tasker.Common.Services
         public Task FindById(Guid id, Guid assignedUserId)
         {
             return _dbContext.Tasks
-               .Where(x => x.AssignedToUser.Id == assignedUserId)
-               .FirstOrDefault(x => x.Id == id);
+                .Include(x => x.CreatedBy)
+                .Include(x => x.AssignedToUser)
+                .Include(x => x.ModifedBy)
+                .Where(x => x.AssignedToUser.Id == assignedUserId)
+                .FirstOrDefault(x => x.Id == id);
         }
 
         public IEnumerable<Task> FindByName(string mask, Guid assignedUserId)
         {
             var query = _dbContext.Tasks
-               .Where(x => x.AssignedToUser.Id == assignedUserId)
-               .Where(x => x.Name != null && x.Name.Contains(mask));
+                .Include(x => x.CreatedBy)
+                .Include(x => x.AssignedToUser)
+                .Include(x => x.ModifedBy)
+                .Where(x => x.AssignedToUser.Id == assignedUserId)
+                .Where(x => x.Name != null && x.Name.Contains(mask));
 
             return query.ToList();
         }
 
         public void Save(Task task)
         {
-            throw new NotImplementedException();
+            if (task == null)
+            {
+                throw new ArgumentNullException("task");
+            }
+
+            //var old = _dbContext.Tasks.FirstOrDefault(x => x.Id == task.Id);
+            //if (old == null)
+            //{
+            //    //create
+            //    _dbContext.Tasks.Add(task);
+            //}
+            //else
+            //{
+            //    //update
+            //    _dbContext.Entry(task).State = EntityState.Modified;
+            //}
+
+            _dbContext.Entry(task).State = EntityState.Modified;
+
+            _dbContext.SaveChanges();
         }
     }
 }

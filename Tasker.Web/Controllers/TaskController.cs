@@ -1,11 +1,13 @@
 ﻿using System;
-using System.Data.Entity;
 using System.Net;
+using System.Web;
 using System.Web.Mvc;
 using Microsoft.AspNet.Identity;
-using Tasker.Common.Intefaces;
+using Microsoft.AspNet.Identity.Owin;
 using Tasker.Data.DAL;
+using Tasker.Data.Manager;
 using Tasker.Data.Model;
+using Tasker.Services.Intefaces;
 
 namespace Tasker.Web.Controllers
 {
@@ -14,15 +16,25 @@ namespace Tasker.Web.Controllers
     {
         private readonly TaskerDbContext _dbContext;
         private readonly ITaskService _taskService;
+        private readonly CustomUserManager _userManager;
 
         public TaskController(TaskerDbContext dbContext, ITaskService taskService)
         {
             _dbContext = dbContext;
             _taskService = taskService;
+            _userManager = System.Web.HttpContext.Current.GetOwinContext().GetUserManager<CustomUserManager>();
         }
 
-        // GET: Tasks
-        public ActionResult Index()
+        // GET: Tasks/Create
+        public ActionResult Create()
+        {
+            return View();
+        }
+
+        // POST: Tasks/Create
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Create(Task task)
         {
             Guid userId;
             if (!Guid.TryParse(System.Web.HttpContext.Current.User.Identity.GetUserId(), out userId))
@@ -30,9 +42,19 @@ namespace Tasker.Web.Controllers
                 return View();
             }
 
-            var model = _taskService.GetAll(userId);
+            //if (ModelState.IsValid)
+            {
+                task.Id = Guid.NewGuid();
+                task.Created = DateTime.UtcNow;
+                task.AssignedToUser = _userManager.FindById(userId);
 
-            return View(model);
+                _dbContext.Tasks.Add(task);
+                _dbContext.SaveChanges();
+
+                return RedirectToAction("Index");
+            }
+
+            return View(task);
         }
 
         // GET: Tasks/Details/5
@@ -53,31 +75,6 @@ namespace Tasker.Web.Controllers
             if (task == null)
             {
                 return HttpNotFound();
-            }
-
-            return View(task);
-        }
-
-        // GET: Tasks/Create
-        public ActionResult Create()
-        {
-            return View();
-        }
-
-        // POST: Tasks/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,Name,DateEnd,Status,Created,Modifed")] Task task)
-        {
-            if (ModelState.IsValid)
-            {
-                task.Id = Guid.NewGuid();
-                _dbContext.Tasks.Add(task);
-                _dbContext.SaveChanges();
-
-                return RedirectToAction("Index");
             }
 
             return View(task);
@@ -107,24 +104,9 @@ namespace Tasker.Web.Controllers
         }
 
         // POST: Tasks/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,Name,DateEnd,Status,Created,Modifed")] Task task)
-        {
-            if (ModelState.IsValid)
-            {
-                _dbContext.Entry(task).State = EntityState.Modified;
-                _dbContext.SaveChanges();
-                return RedirectToAction("Index");
-            }
-
-            return View(task);
-        }
-
-        // GET: Tasks/Delete/5
-        public ActionResult Delete(Guid? id)
+        public ActionResult Edit(Task task)
         {
             Guid userId;
             if (!Guid.TryParse(System.Web.HttpContext.Current.User.Identity.GetUserId(), out userId))
@@ -132,30 +114,33 @@ namespace Tasker.Web.Controllers
                 return View();
             }
 
-            if (id == null)
+            //if (ModelState.IsValid)
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
+                var user = _userManager.FindById(userId);
+                task.AssignedToUser = user;
+                task.Modifed = DateTime.UtcNow;
+                task.ModifedBy = user;
 
-            var task = _taskService.FindById(id.Value, userId);
-            if (task == null)
-            {
-                return HttpNotFound();
+                _taskService.Save(task);
+
+                return RedirectToAction("Index");
             }
 
             return View(task);
         }
 
-        // POST: Tasks/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public ActionResult DeleteConfirmed(Guid id)
+        // GET: Tasks
+        public ActionResult Index()
         {
-            var task = _dbContext.Tasks.Find(id);
-            _dbContext.Tasks.Remove(task);
-            _dbContext.SaveChanges();
+            Guid userId;
+            if (!Guid.TryParse(System.Web.HttpContext.Current.User.Identity.GetUserId(), out userId))
+            {
+                return View();
+            }
 
-            return RedirectToAction("Index");
+            var model = _taskService.GetAll(userId);
+
+            return View(model);
         }
 
         protected override void Dispose(bool disposing)

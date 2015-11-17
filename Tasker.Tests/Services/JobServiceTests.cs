@@ -4,8 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using NUnit.Framework;
-using Tasker.Common.Services;
 using Tasker.Data.DAL;
+using Tasker.Services.Services;
 
 namespace Tasker.Tests.Services
 {
