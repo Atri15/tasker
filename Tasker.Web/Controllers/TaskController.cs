@@ -5,10 +5,10 @@ using System.Web;
 using System.Web.Mvc;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
+using Tasker.Data.Interfaces;
 using Tasker.Data.Manager;
 using Tasker.Data.Model;
 using Tasker.Data.Model.Enum;
-using Tasker.Services.Intefaces;
 using Tasker.Web.Models;
 
 namespace Tasker.Web.Controllers

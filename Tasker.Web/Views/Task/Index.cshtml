@@ -1,4 +1,6 @@
-﻿@model Tasker.Data.Manager.PagedList<Tasker.Web.Models.TaskViewModel>
+﻿@using Tasker.Data.Interfaces
+@using Tasker.Data.Manager
+@model Tasker.Data.Manager.PagedList<Tasker.Web.Models.TaskViewModel>
 
 @{
     ViewBag.Title = "Index";
@@ -43,14 +45,30 @@
     }
 </table>
 
-<table class="table">
+<table>
     <tr>
         @for (var i = 1; i <= Model.PageCount; i++)
         {
-            var style = Model.PageNumber == i ? "font-weight: bold;" : "font-weight: lighter;";
-            <td style="@style">
-                @Html.ActionLink(i.ToString(), "Index", new { page = i })
+            int left = Model.PageNumber - Model.ActionLinkCount / 2;
+            int right = Model.PageNumber + Model.ActionLinkCount / 2;
+            if (i == Model.PageCount && right < Model.PageCount )
+            {
+                <td>....</td>
+            }
+            else if (i!= 1 && (i < left || i > right))
+            {
+                continue;
+            }
+
+            var style = Model.PageNumber == i ? "font-weight: bold;" : "font-weight: normal;";
+            <td style="@style; padding: 5px;">
+                @Html.ActionLink(i.ToString(), "Index", new {page = i})
             </td>
+
+            if (i == 1 && left > 0)
+            {
+                <td>....</td>
+            }
         }
     </tr>
 </table>

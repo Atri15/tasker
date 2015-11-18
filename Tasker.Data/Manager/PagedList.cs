@@ -2,7 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using Tasker.Services.Intefaces;
+using Tasker.Data.Interfaces;
 
 namespace Tasker.Data.Manager
 {
@@ -10,11 +10,13 @@ namespace Tasker.Data.Manager
     {
         private readonly IEnumerable<T> _superset;
 
+        public int PageCount { get; private set; }
+
         public PagedList(IEnumerable<T> superset, int? pageNumber = null, int? pageSize = null)
         {
             PageSize = pageSize ?? 3;
             PageNumber = pageNumber ?? 1;
-            
+
             if (superset == null)
             {
                 superset = Enumerable.Empty<T>();
@@ -22,7 +24,7 @@ namespace Tasker.Data.Manager
 
             _superset = superset;
 
-            TotalItemCount = superset.Count(); 
+            TotalItemCount = superset.Count();
             PageCount = TotalItemCount > 0
                 ? (int)Math.Ceiling(TotalItemCount / (double)PageSize)
                 : 0;
@@ -42,7 +44,11 @@ namespace Tasker.Data.Manager
             return GetEnumerator();
         }
 
-        public int PageCount { get; private set; }
+        public int ActionLinkCount
+        {
+            get { return 7; }
+        }
+
         public int TotalItemCount { get; private set; }
         public int PageNumber { get; private set; }
         public int PageSize { get; private set; }

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using Task = Tasker.Data.Model.Task;
 
-namespace Tasker.Services.Intefaces
+namespace Tasker.Data.Interfaces
 {
     public interface ITaskService
     {

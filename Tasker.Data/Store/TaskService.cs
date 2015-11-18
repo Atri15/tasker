@@ -2,12 +2,11 @@
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
 using Tasker.Data.DAL;
+using Tasker.Data.Interfaces;
 using Tasker.Data.Model;
-using Tasker.Services.Intefaces;
 
-namespace Tasker.Services.Services
+namespace Tasker.Data.Store
 {
     public class TaskService : ITaskService
     {

@@ -51,10 +51,6 @@
     <Compile Include="Services\JobServiceTests.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Tasker.Services\Tasker.Services.csproj">
-      <Project>{a1f84753-02c7-4092-9f52-afb42d5a8a56}</Project>
-      <Name>Tasker.Services</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Tasker.Data\Tasker.Data.csproj">
       <Project>{C010B31B-F164-465B-B450-406E3C970CC3}</Project>
       <Name>Tasker.Data</Name>

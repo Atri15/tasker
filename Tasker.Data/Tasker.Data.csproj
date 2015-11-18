@@ -67,9 +67,10 @@
   <ItemGroup>
     <Compile Include="DAL\TaskerDbContext.cs" />
     <Compile Include="DAL\TaskerDbInitializer.cs" />
+    <Compile Include="Interfaces\ITaskService.cs" />
     <Compile Include="Manager\CustomPasswordHasher.cs" />
     <Compile Include="Manager\CustomSignInManager.cs" />
-    <Compile Include="Manager\IPagedList.cs" />
+    <Compile Include="Interfaces\IPagedList.cs" />
     <Compile Include="Manager\PagedList.cs" />
     <Compile Include="Model\Enum\TaskStatus.cs" />
     <Compile Include="Model\Task.cs" />
@@ -77,6 +78,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Manager\CustomUserManager.cs" />
     <Compile Include="Store\CustomUserStore.cs" />
+    <Compile Include="Store\TaskService.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

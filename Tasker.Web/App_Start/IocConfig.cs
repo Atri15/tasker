@@ -6,8 +6,8 @@ using System.Web.Mvc;
 using Autofac;
 using Autofac.Integration.Mvc;
 using Tasker.Data.DAL;
-using Tasker.Services.Intefaces;
-using Tasker.Services.Services;
+using Tasker.Data.Interfaces;
+using Tasker.Data.Store;
 
 namespace Tasker.Web
 {

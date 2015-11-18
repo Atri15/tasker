@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using NUnit.Framework;
 using Tasker.Data.DAL;
-using Tasker.Services.Services;
+using Tasker.Data.Store;
 
 namespace Tasker.Tests.Services
 {
