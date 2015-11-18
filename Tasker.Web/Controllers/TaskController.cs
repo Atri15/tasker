@@ -5,7 +5,6 @@ using System.Web;
 using System.Web.Mvc;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
-using Tasker.Data.DAL;
 using Tasker.Data.Manager;
 using Tasker.Data.Model;
 using Tasker.Data.Model.Enum;
@@ -52,9 +51,8 @@ namespace Tasker.Web.Controllers
                     DateEnd = model.DateEnd,
                     Status = TaskStatus.New,
                     AssignedToUser = user,
-
                     Created = DateTime.UtcNow,
-                    CreatedBy = user,
+                    CreatedBy = user
                 });
 
                 return RedirectToAction("Index");
@@ -83,7 +81,7 @@ namespace Tasker.Web.Controllers
                 return HttpNotFound();
             }
 
-            var model = new TaskViewModel()
+            var model = new TaskViewModel
             {
                 Id = task.Id,
                 DateEnd = task.DateEnd,
@@ -113,7 +111,7 @@ namespace Tasker.Web.Controllers
                 return HttpNotFound();
             }
 
-            var model = new TaskViewModel()
+            var model = new TaskViewModel
             {
                 Id = task.Id,
                 DateEnd = task.DateEnd,
@@ -149,7 +147,7 @@ namespace Tasker.Web.Controllers
         }
 
         // GET: Tasks
-        public ActionResult Index()
+        public ActionResult Index(int? page)
         {
             Guid userId;
             if (!Guid.TryParse(System.Web.HttpContext.Current.User.Identity.GetUserId(), out userId))
@@ -157,12 +155,14 @@ namespace Tasker.Web.Controllers
                 return View();
             }
 
-            var model = _taskService.GetAll(userId).Select(x => new TaskViewModel
-            {
-                Id = x.Id,
-                Name = x.Name,
-                DateEnd = x.DateEnd
-            });
+            var tasks = _taskService.GetAll(userId)
+                .Select(x => new TaskViewModel
+                {
+                    Id = x.Id,
+                    Name = x.Name,
+                    DateEnd = x.DateEnd
+                });
+            var model = new PagedList<TaskViewModel>(tasks, page);
 
             return View(model);
         }

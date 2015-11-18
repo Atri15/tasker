@@ -69,6 +69,8 @@
     <Compile Include="DAL\TaskerDbInitializer.cs" />
     <Compile Include="Manager\CustomPasswordHasher.cs" />
     <Compile Include="Manager\CustomSignInManager.cs" />
+    <Compile Include="Manager\IPagedList.cs" />
+    <Compile Include="Manager\PagedList.cs" />
     <Compile Include="Model\Enum\TaskStatus.cs" />
     <Compile Include="Model\Task.cs" />
     <Compile Include="Model\User.cs" />
