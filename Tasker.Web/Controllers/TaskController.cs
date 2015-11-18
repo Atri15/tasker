@@ -7,7 +7,7 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Tasker.Data.Helpers;
 using Tasker.Data.Interfaces;
-using Tasker.Data.Manager;
+using Tasker.Data.Managers;
 using Tasker.Data.Model;
 using Tasker.Data.Model.Enum;
 using Tasker.Web.Models;
@@ -18,11 +18,13 @@ namespace Tasker.Web.Controllers
     public class TaskController : Controller
     {
         private readonly ITaskService _taskService;
+        private readonly IDateService _dateService;
         private readonly CustomUserManager _userManager;
 
-        public TaskController(ITaskService taskService)
+        public TaskController(ITaskService taskService, IDateService dateService)
         {
             _taskService = taskService;
+            _dateService = dateService;
             _userManager = System.Web.HttpContext.Current.GetOwinContext().GetUserManager<CustomUserManager>();
         }
 
@@ -52,7 +54,7 @@ namespace Tasker.Web.Controllers
                     DateEnd = model.DateEnd,
                     Status = TaskStatus.New,
                     AssignedToUser = user,
-                    Created = DateTime.UtcNow,
+                    Created = _dateService.GetCurrentDateUtc(),
                     CreatedBy = user
                 });
 
@@ -86,7 +88,8 @@ namespace Tasker.Web.Controllers
             {
                 Id = task.Id,
                 DateEnd = task.DateEnd,
-                Name = task.Name
+                Name = task.Name,
+                Status = task.Status ?? TaskStatus.None
             };
 
             return View(model);
@@ -116,7 +119,8 @@ namespace Tasker.Web.Controllers
             {
                 Id = task.Id,
                 DateEnd = task.DateEnd,
-                Name = task.Name
+                Name = task.Name,
+                Status = task.Status ?? TaskStatus.None
             };
 
             return View(model);
@@ -138,6 +142,7 @@ namespace Tasker.Web.Controllers
                 var task = _taskService.FindById(model.Id, userId);
                 task.DateEnd = model.DateEnd;
                 task.Name = model.Name;
+                task.Status = model.Status;
 
                 _taskService.Save(task);
 
@@ -161,7 +166,8 @@ namespace Tasker.Web.Controllers
                 {
                     Id = x.Id,
                     Name = x.Name,
-                    DateEnd = x.DateEnd
+                    DateEnd = x.DateEnd,
+                    Status = x.Status ?? TaskStatus.None
                 });
             var model = tasks.AsPagedList(page);
 

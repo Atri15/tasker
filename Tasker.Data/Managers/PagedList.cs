@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Tasker.Data.Interfaces;
 
-namespace Tasker.Data.Manager
+namespace Tasker.Data.Managers
 {
     public class PagedList<T> : IEnumerable<T>, IPagedList
         where T: class
@@ -29,7 +29,7 @@ namespace Tasker.Data.Manager
 
         public PagedList(IEnumerable<T> superset, int? pageNumber = null, int? pageSize = null)
         {
-            PageSize = pageSize ?? 3;
+            PageSize = pageSize ?? 5;
             PageNumber = pageNumber ?? 1;
 
             if (superset == null)

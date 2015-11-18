@@ -1,6 +1,6 @@
 using Microsoft.AspNet.Identity;
 
-namespace Tasker.Data.Manager
+namespace Tasker.Data.Managers
 {
     public class CustomPasswordHasher : PasswordHasher
     {

@@ -11,14 +11,14 @@ namespace Tasker.Web
     {
         protected void Application_Start()
         {
+            Database.SetInitializer(new TaskerDbInitializer());
+
             AreaRegistration.RegisterAllAreas();
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
 
             IocConfig.RegisterContainer();
-
-            Database.SetInitializer(new TaskerDbInitializer());
         }
     }
 }

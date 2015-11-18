@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
+using Tasker.Data.Model.Enum;
 
 namespace Tasker.Web.Models
 {
@@ -14,5 +15,9 @@ namespace Tasker.Web.Models
 
         [Display(Name = "Task end date")]
         public DateTime? DateEnd { get; set; }
+
+        [Required]
+        [Display(Name = "Task status")]
+        public TaskStatus Status { get; set; }
     }
 }

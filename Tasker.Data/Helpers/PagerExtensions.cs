@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Tasker.Data.Manager;
+﻿using System.Collections.Generic;
+using Tasker.Data.Managers;
 
 namespace Tasker.Data.Helpers
 {

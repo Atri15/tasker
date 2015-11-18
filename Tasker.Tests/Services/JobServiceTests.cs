@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using NUnit.Framework;
+﻿using NUnit.Framework;
 using Tasker.Data.DAL;
-using Tasker.Data.Store;
+using Tasker.Data.Services;
 
 namespace Tasker.Tests.Services
 {
@@ -17,6 +12,7 @@ namespace Tasker.Tests.Services
         {
             var dbContext = new TaskerDbContext();
             var service = new TaskService(dbContext);
+
             Assert.IsNotNull(service);
         }
     }

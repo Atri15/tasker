@@ -4,7 +4,7 @@ using System.Web;
 using System.Web.Mvc;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
-using Tasker.Data.Manager;
+using Tasker.Data.Managers;
 using Tasker.Web.Models;
 
 namespace Tasker.Web.Controllers

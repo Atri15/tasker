@@ -6,7 +6,7 @@ using Tasker.Data.DAL;
 using Tasker.Data.Interfaces;
 using Tasker.Data.Model;
 
-namespace Tasker.Data.Store
+namespace Tasker.Data.Services
 {
     public class TaskService : ITaskService
     {

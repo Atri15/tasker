@@ -3,7 +3,7 @@ using Microsoft.Owin;
 using Microsoft.Owin.Security.Cookies;
 using Owin;
 using Tasker.Data.DAL;
-using Tasker.Data.Manager;
+using Tasker.Data.Managers;
 using Tasker.Web;
 
 [assembly: OwinStartup(typeof(Startup))]

@@ -5,9 +5,9 @@ using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin;
 using Tasker.Data.DAL;
 using Tasker.Data.Model;
-using Tasker.Data.Store;
+using Tasker.Data.Services;
 
-namespace Tasker.Data.Manager
+namespace Tasker.Data.Managers
 {
     public class CustomUserManager : UserManager<User, Guid>
     {

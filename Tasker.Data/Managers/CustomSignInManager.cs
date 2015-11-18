@@ -6,7 +6,7 @@ using Microsoft.Owin;
 using Microsoft.Owin.Security;
 using Tasker.Data.Model;
 
-namespace Tasker.Data.Manager
+namespace Tasker.Data.Managers
 {
     public class CustomSignInManager : SignInManager<User, Guid>
     {

@@ -6,7 +6,7 @@ using Tasker.Data.DAL;
 using Tasker.Data.Model;
 using Task = System.Threading.Tasks.Task;
 
-namespace Tasker.Data.Store
+namespace Tasker.Data.Services
 {
     public class CustomUserStore : IUserStore<User, Guid>
     {

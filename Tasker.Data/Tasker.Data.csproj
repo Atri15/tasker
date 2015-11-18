@@ -68,18 +68,20 @@
     <Compile Include="DAL\TaskerDbContext.cs" />
     <Compile Include="DAL\TaskerDbInitializer.cs" />
     <Compile Include="Helpers\PagerExtensions.cs" />
+    <Compile Include="Interfaces\IDateService.cs" />
     <Compile Include="Interfaces\ITaskService.cs" />
-    <Compile Include="Manager\CustomPasswordHasher.cs" />
-    <Compile Include="Manager\CustomSignInManager.cs" />
+    <Compile Include="Managers\CustomPasswordHasher.cs" />
+    <Compile Include="Managers\CustomSignInManager.cs" />
     <Compile Include="Interfaces\IPagedList.cs" />
-    <Compile Include="Manager\PagedList.cs" />
+    <Compile Include="Managers\PagedList.cs" />
     <Compile Include="Model\Enum\TaskStatus.cs" />
     <Compile Include="Model\Task.cs" />
     <Compile Include="Model\User.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Manager\CustomUserManager.cs" />
-    <Compile Include="Store\CustomUserStore.cs" />
-    <Compile Include="Store\TaskService.cs" />
+    <Compile Include="Managers\CustomUserManager.cs" />
+    <Compile Include="Services\CustomUserStore.cs" />
+    <Compile Include="Services\DateService.cs" />
+    <Compile Include="Services\TaskService.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
