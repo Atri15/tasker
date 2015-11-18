@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
@@ -7,20 +8,20 @@ using Microsoft.AspNet.Identity.Owin;
 using Tasker.Data.DAL;
 using Tasker.Data.Manager;
 using Tasker.Data.Model;
+using Tasker.Data.Model.Enum;
 using Tasker.Services.Intefaces;
+using Tasker.Web.Models;
 
 namespace Tasker.Web.Controllers
 {
     [Authorize]
     public class TaskController : Controller
     {
-        private readonly TaskerDbContext _dbContext;
         private readonly ITaskService _taskService;
         private readonly CustomUserManager _userManager;
 
-        public TaskController(TaskerDbContext dbContext, ITaskService taskService)
+        public TaskController(ITaskService taskService)
         {
-            _dbContext = dbContext;
             _taskService = taskService;
             _userManager = System.Web.HttpContext.Current.GetOwinContext().GetUserManager<CustomUserManager>();
         }
@@ -34,7 +35,7 @@ namespace Tasker.Web.Controllers
         // POST: Tasks/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(Task task)
+        public ActionResult Create(TaskViewModel model)
         {
             Guid userId;
             if (!Guid.TryParse(System.Web.HttpContext.Current.User.Identity.GetUserId(), out userId))
@@ -42,19 +43,24 @@ namespace Tasker.Web.Controllers
                 return View();
             }
 
-            //if (ModelState.IsValid)
+            if (ModelState.IsValid)
             {
-                task.Id = Guid.NewGuid();
-                task.Created = DateTime.UtcNow;
-                task.AssignedToUser = _userManager.FindById(userId);
+                var user = _userManager.FindById(userId);
+                _taskService.Save(new Task
+                {
+                    Name = model.Name,
+                    DateEnd = model.DateEnd,
+                    Status = TaskStatus.New,
+                    AssignedToUser = user,
 
-                _dbContext.Tasks.Add(task);
-                _dbContext.SaveChanges();
+                    Created = DateTime.UtcNow,
+                    CreatedBy = user,
+                });
 
                 return RedirectToAction("Index");
             }
 
-            return View(task);
+            return View(model);
         }
 
         // GET: Tasks/Details/5
@@ -77,7 +83,14 @@ namespace Tasker.Web.Controllers
                 return HttpNotFound();
             }
 
-            return View(task);
+            var model = new TaskViewModel()
+            {
+                Id = task.Id,
+                DateEnd = task.DateEnd,
+                Name = task.Name
+            };
+
+            return View(model);
         }
 
         // GET: Tasks/Edit/5
@@ -100,13 +113,20 @@ namespace Tasker.Web.Controllers
                 return HttpNotFound();
             }
 
-            return View(task);
+            var model = new TaskViewModel()
+            {
+                Id = task.Id,
+                DateEnd = task.DateEnd,
+                Name = task.Name
+            };
+
+            return View(model);
         }
 
         // POST: Tasks/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(Task task)
+        public ActionResult Edit(TaskViewModel model)
         {
             Guid userId;
             if (!Guid.TryParse(System.Web.HttpContext.Current.User.Identity.GetUserId(), out userId))
@@ -114,19 +134,18 @@ namespace Tasker.Web.Controllers
                 return View();
             }
 
-            //if (ModelState.IsValid)
+            if (ModelState.IsValid)
             {
-                var user = _userManager.FindById(userId);
-                task.AssignedToUser = user;
-                task.Modifed = DateTime.UtcNow;
-                task.ModifedBy = user;
+                var task = _taskService.FindById(model.Id, userId);
+                task.DateEnd = model.DateEnd;
+                task.Name = model.Name;
 
                 _taskService.Save(task);
 
                 return RedirectToAction("Index");
             }
 
-            return View(task);
+            return View(model);
         }
 
         // GET: Tasks
@@ -138,19 +157,14 @@ namespace Tasker.Web.Controllers
                 return View();
             }
 
-            var model = _taskService.GetAll(userId);
+            var model = _taskService.GetAll(userId).Select(x => new TaskViewModel
+            {
+                Id = x.Id,
+                Name = x.Name,
+                DateEnd = x.DateEnd
+            });
 
             return View(model);
-        }
-
-        protected override void Dispose(bool disposing)
-        {
-            if (disposing)
-            {
-                _dbContext.Dispose();
-            }
-
-            base.Dispose(disposing);
         }
     }
 }

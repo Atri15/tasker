@@ -25,9 +25,5 @@ namespace Tasker.Data.Model
 
         [Required]
         public User CreatedBy { get; set; }
-
-        public DateTime? Modifed { get; set; }
-
-        public User ModifedBy { get; set; }
     }
 }

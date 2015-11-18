@@ -29,8 +29,6 @@ namespace Tasker.Data.DAL
                     Created = DateTime.UtcNow,
                     CreatedBy = User.AdminUser,
                     DateEnd = DateTime.UtcNow.AddDays(3),
-                    Modifed = null,
-                    ModifedBy = null,
                     Name = "First task",
                     Status = TaskStatus.New
                 },
@@ -41,8 +39,6 @@ namespace Tasker.Data.DAL
                     Created = DateTime.UtcNow,
                     CreatedBy = User.AdminUser,
                     DateEnd = DateTime.UtcNow.AddDays(2),
-                    Modifed = null,
-                    ModifedBy = null,
                     Name = "Second task",
                     Status = TaskStatus.New
                 },
@@ -53,8 +49,6 @@ namespace Tasker.Data.DAL
                     Created = DateTime.UtcNow.AddDays(-2),
                     CreatedBy = User.AdminUser,
                     DateEnd = DateTime.UtcNow.Date,
-                    Modifed = null,
-                    ModifedBy = null,
                     Name = "Finished task",
                     Status = TaskStatus.Done
                 }
@@ -66,8 +60,6 @@ namespace Tasker.Data.DAL
                 CreatedBy = User.AdminUser,
                 DateEnd = DateTime.UtcNow.AddDays(x - 50),
                 AssignedToUser = User.TestUser,
-                Modifed = null,
-                ModifedBy = null,
                 Name = string.Format("Task #{0:000}", x),
                 Status = TaskStatus.New
             }));

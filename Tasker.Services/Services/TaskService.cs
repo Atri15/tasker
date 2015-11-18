@@ -23,7 +23,6 @@ namespace Tasker.Services.Services
             var query = _dbContext.Tasks
                 .Include(x => x.CreatedBy)
                 .Include(x => x.AssignedToUser)
-                .Include(x => x.ModifedBy)
                 .Where(x => x.AssignedToUser.Id == assignedUserId)
                 .OrderBy(x => x.DateEnd)
                 .ThenBy(x => x.Name);
@@ -36,7 +35,6 @@ namespace Tasker.Services.Services
             return _dbContext.Tasks
                 .Include(x => x.CreatedBy)
                 .Include(x => x.AssignedToUser)
-                .Include(x => x.ModifedBy)
                 .Where(x => x.AssignedToUser.Id == assignedUserId)
                 .FirstOrDefault(x => x.Id == id);
         }
@@ -46,7 +44,6 @@ namespace Tasker.Services.Services
             var query = _dbContext.Tasks
                 .Include(x => x.CreatedBy)
                 .Include(x => x.AssignedToUser)
-                .Include(x => x.ModifedBy)
                 .Where(x => x.AssignedToUser.Id == assignedUserId)
                 .Where(x => x.Name != null && x.Name.Contains(mask));
 
@@ -60,19 +57,24 @@ namespace Tasker.Services.Services
                 throw new ArgumentNullException("task");
             }
 
-            //var old = _dbContext.Tasks.FirstOrDefault(x => x.Id == task.Id);
-            //if (old == null)
-            //{
-            //    //create
-            //    _dbContext.Tasks.Add(task);
-            //}
-            //else
-            //{
-            //    //update
-            //    _dbContext.Entry(task).State = EntityState.Modified;
-            //}
+            //save task
+            if (task.Id == Guid.Empty)
+            {
+                //create
+                task.Id = Guid.NewGuid();
+                if (task.AssignedToUser != null) _dbContext.Entry(task.AssignedToUser).State = EntityState.Unchanged;
+                if (task.CreatedBy != null) _dbContext.Entry(task.CreatedBy).State = EntityState.Unchanged;
 
-            _dbContext.Entry(task).State = EntityState.Modified;
+                _dbContext.Tasks.Add(task);
+            }
+            else
+            {
+                //update
+                if (task.AssignedToUser != null) _dbContext.Entry(task.AssignedToUser).State = EntityState.Modified;
+                if (task.CreatedBy != null) _dbContext.Entry(task.CreatedBy).State = EntityState.Modified;
+
+                _dbContext.Entry(task).State = EntityState.Modified;
+            }
 
             _dbContext.SaveChanges();
         }
