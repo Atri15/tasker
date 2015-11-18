@@ -5,6 +5,7 @@ using System.Web;
 using System.Web.Mvc;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
+using Tasker.Data.Helpers;
 using Tasker.Data.Interfaces;
 using Tasker.Data.Manager;
 using Tasker.Data.Model;
@@ -162,7 +163,7 @@ namespace Tasker.Web.Controllers
                     Name = x.Name,
                     DateEnd = x.DateEnd
                 });
-            var model = new PagedList<TaskViewModel>(tasks, page);
+            var model = tasks.AsPagedList(page);
 
             return View(model);
         }

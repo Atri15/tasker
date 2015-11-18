@@ -67,6 +67,7 @@
   <ItemGroup>
     <Compile Include="DAL\TaskerDbContext.cs" />
     <Compile Include="DAL\TaskerDbInitializer.cs" />
+    <Compile Include="Helpers\PagerExtensions.cs" />
     <Compile Include="Interfaces\ITaskService.cs" />
     <Compile Include="Manager\CustomPasswordHasher.cs" />
     <Compile Include="Manager\CustomSignInManager.cs" />
@@ -84,6 +85,7 @@
     <None Include="App.config" />
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

@@ -45,19 +45,19 @@
 
 <table>
     <tr>
-        @if (Model.CurrentIndexes.First() != 1)
+        @if (Model.CurrentPageIndexes.First() != 1)
         {
             <td style="padding: 5px;">
                 @Html.ActionLink("1", "Index", new { page = 1 })
             </td>
         }
 
-        @if (Model.CurrentIndexes.First() > 2)
+        @if (Model.CurrentPageIndexes.First() > 2)
         {
             <td>....</td>
         }
 
-        @foreach (var i in Model.CurrentIndexes)
+        @foreach (var i in Model.CurrentPageIndexes)
         {
             var style = Model.PageNumber == i ? "font-weight: bold;" : "font-weight: normal;";
             <td style="@style; padding: 5px;">
@@ -65,12 +65,12 @@
             </td>
         }
 
-        @if (Model.CurrentIndexes.Last() < Model.PageCount - 1)
+        @if (Model.CurrentPageIndexes.Last() < Model.PageCount - 1)
         {
             <td>....</td>
         }
 
-        @if (Model.CurrentIndexes.Last() != Model.PageCount)
+        @if (Model.CurrentPageIndexes.Last() != Model.PageCount)
         {
             <td style="padding: 5px;">
                 @Html.ActionLink(Model.PageCount.ToString(), "Index", new { page = Model.PageCount })

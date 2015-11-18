@@ -7,23 +7,23 @@ using Tasker.Data.Interfaces;
 namespace Tasker.Data.Manager
 {
     public class PagedList<T> : IEnumerable<T>, IPagedList
+        where T: class
     {
         private readonly IEnumerable<T> _superset;
 
         public int PageCount { get; private set; }
 
-        public IEnumerable<int> CurrentIndexes
+        public IEnumerable<int> CurrentPageIndexes
         {
             get
             {
-                var indexes = Enumerable.Range(1, PageCount);
                 var skip = PageNumber - (int)((double)ActionLinkCount / 2 + 0.5);
                 if (skip + ActionLinkCount > PageCount)
                 {
                     skip = PageCount - ActionLinkCount;
                 }
 
-                return indexes.Skip(skip).Take(ActionLinkCount);
+                return Enumerable.Range(1, PageCount).Skip(skip).Take(ActionLinkCount).ToList();
             }
         }
 
