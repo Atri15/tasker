@@ -12,6 +12,21 @@ namespace Tasker.Data.Manager
 
         public int PageCount { get; private set; }
 
+        public IEnumerable<int> CurrentIndexes
+        {
+            get
+            {
+                var indexes = Enumerable.Range(1, PageCount);
+                var skip = PageNumber - (int)((double)ActionLinkCount / 2 + 0.5);
+                if (skip + ActionLinkCount > PageCount)
+                {
+                    skip = PageCount - ActionLinkCount;
+                }
+
+                return indexes.Skip(skip).Take(ActionLinkCount);
+            }
+        }
+
         public PagedList(IEnumerable<T> superset, int? pageNumber = null, int? pageSize = null)
         {
             PageSize = pageSize ?? 3;

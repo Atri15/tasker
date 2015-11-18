@@ -1,6 +1,4 @@
-﻿@using Tasker.Data.Interfaces
-@using Tasker.Data.Manager
-@model Tasker.Data.Manager.PagedList<Tasker.Web.Models.TaskViewModel>
+﻿@model Tasker.Data.Manager.PagedList<Tasker.Web.Models.TaskViewModel>
 
 @{
     ViewBag.Title = "Index";
@@ -47,28 +45,36 @@
 
 <table>
     <tr>
-        @for (var i = 1; i <= Model.PageCount; i++)
+        @if (Model.CurrentIndexes.First() != 1)
         {
-            int left = Model.PageNumber - Model.ActionLinkCount / 2;
-            int right = Model.PageNumber + Model.ActionLinkCount / 2;
-            if (i == Model.PageCount && right < Model.PageCount )
-            {
-                <td>....</td>
-            }
-            else if (i!= 1 && (i < left || i > right))
-            {
-                continue;
-            }
+            <td style="padding: 5px;">
+                @Html.ActionLink("1", "Index", new { page = 1 })
+            </td>
+        }
 
+        @if (Model.CurrentIndexes.First() > 2)
+        {
+            <td>....</td>
+        }
+
+        @foreach (var i in Model.CurrentIndexes)
+        {
             var style = Model.PageNumber == i ? "font-weight: bold;" : "font-weight: normal;";
             <td style="@style; padding: 5px;">
-                @Html.ActionLink(i.ToString(), "Index", new {page = i})
+                @Html.ActionLink(i.ToString(), "Index", new { page = i })
             </td>
+        }
 
-            if (i == 1 && left > 0)
-            {
-                <td>....</td>
-            }
+        @if (Model.CurrentIndexes.Last() < Model.PageCount - 1)
+        {
+            <td>....</td>
+        }
+
+        @if (Model.CurrentIndexes.Last() != Model.PageCount)
+        {
+            <td style="padding: 5px;">
+                @Html.ActionLink(Model.PageCount.ToString(), "Index", new { page = Model.PageCount })
+            </td>
         }
     </tr>
 </table>
