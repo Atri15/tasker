@@ -152,26 +152,39 @@ namespace Tasker.Web.Controllers
             return View(model);
         }
 
-        // GET: Tasks
-        public ActionResult Index(int? page)
+        // GET and POST
+        public ActionResult Index(string mask, int? page)
         {
+            ViewBag.TaskNameMask = mask;
+
             Guid userId;
             if (!Guid.TryParse(System.Web.HttpContext.Current.User.Identity.GetUserId(), out userId))
             {
                 return View();
             }
 
-            var tasks = _taskService.GetAll(userId)
+            var tasks = _taskService.FindByName(mask, userId)
                 .Select(x => new TaskViewModel
                 {
                     Id = x.Id,
                     Name = x.Name,
                     DateEnd = x.DateEnd,
-                    Status = x.Status ?? TaskStatus.None
+                    Status = x.Status ?? TaskStatus.None,
+                    Color = GetTaskColor(x)
                 });
             var model = tasks.AsPagedList(page);
 
             return View(model);
+        }
+
+        private string GetTaskColor(Task x)
+        {
+            var currentDate = _dateService.GetCurrentDateUtc();
+            if (x.Status == TaskStatus.Done) return "Green";
+            if (x.DateEnd.HasValue && x.DateEnd.Value.Date == currentDate.Date) return "Blue";
+            if (x.DateEnd < currentDate && x.Status != TaskStatus.Done) return "Red";
+
+            return "Grey";
         }
     }
 }

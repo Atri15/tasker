@@ -19,5 +19,7 @@ namespace Tasker.Web.Models
         [Required]
         [Display(Name = "Task status")]
         public TaskStatus Status { get; set; }
+
+        public string Color { get; set; }
     }
 }

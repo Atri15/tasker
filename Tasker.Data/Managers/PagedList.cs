@@ -7,7 +7,7 @@ using Tasker.Data.Interfaces;
 namespace Tasker.Data.Managers
 {
     public class PagedList<T> : IEnumerable<T>, IPagedList
-        where T: class
+        where T : class
     {
         private readonly IEnumerable<T> _superset;
 
@@ -17,6 +17,8 @@ namespace Tasker.Data.Managers
         {
             get
             {
+                if (PageCount == 0) return new[] { 1 };
+
                 var skip = PageNumber - (int)((double)ActionLinkCount / 2 + 0.5);
                 if (skip + ActionLinkCount > PageCount)
                 {
@@ -61,7 +63,7 @@ namespace Tasker.Data.Managers
 
         public int ActionLinkCount
         {
-            get { return 7; }
+            get { return 9; }
         }
 
         public int TotalItemCount { get; private set; }

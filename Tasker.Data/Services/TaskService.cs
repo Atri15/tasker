@@ -43,8 +43,13 @@ namespace Tasker.Data.Services
             var query = _dbContext.Tasks
                 .Include(x => x.CreatedBy)
                 .Include(x => x.AssignedToUser)
-                .Where(x => x.AssignedToUser.Id == assignedUserId)
-                .Where(x => x.Name != null && x.Name.Contains(mask));
+                .Where(x => x.AssignedToUser.Id == assignedUserId);
+            if (!String.IsNullOrWhiteSpace(mask))
+            {
+                query = query.Where(x => x.Name != null && x.Name.Contains(mask));
+            }
+
+            query = query.OrderBy(x => x.DateEnd).ThenBy(x => x.Name);
 
             return query.ToList();
         }
